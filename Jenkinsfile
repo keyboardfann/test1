@@ -5,7 +5,7 @@ podTemplate(label: label, containers: [
   containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'kubectl', image: 'cnych/kubectl', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'helm', image: 'cnych/helm', command: 'cat', ttyEnabled: true)
-  containerTemplate(name: 'busybox', image: 'busybox', command: 'cat', ttyEnabled: true)
+  containerTemplate(name: 'busybox', image: 'centos', command: 'cat', ttyEnabled: true)
 
 ], volumes: [
   hostPathVolume(mountPath: '/root/.m2', hostPath: '/var/run/m2'),
@@ -19,13 +19,8 @@ podTemplate(label: label, containers: [
 
     stage('Test') {
       try {
-        container('test') {
-          sh """
-            pwd
-            echo "GIT_BRANCH=${gitBranch}" >> /etc/environment
-            echo "GIT_COMMIT=${gitCommit}" >> /etc/environment
-            echo "Testing 123456"
-            """
+        container('centos') {
+          sh "echo Testing 123456"
         }
       }
       catch (exc) {
